@@ -1,10 +1,10 @@
 # NeuronDash
 
-NeuronDash is an AI-powered data diagnostics and interactive reporting dashboard platform. It helps users clean, analyze, visualize, and query datasets in real-time using modern, high-fidelity widgets and an integrated conversational LLM assistant.
+NeuronDash is an AI powered data diagnostics and interactive reporting dashboard platform. It helps users clean, analyze, visualize, and query datasets in realtime using modern, high fidelity widgets and an integrated conversational LLM assistant.
 
 ---
 
-## 🏗️ Repository Architecture
+##  Repository Architecture
 
 This is a monorepo containing both the frontend client and the backend server services:
 
@@ -27,7 +27,7 @@ This is a monorepo containing both the frontend client and the backend server se
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
 1. **AI-Powered Data Diagnostics**: Automatically scan uploaded datasets (CSV, Excel, Word, PDF) to detect missing values, calculate data completeness, analyze types, and identify outliers.
 2. **Interactive Visualizer**: Dynamic layout support for 8 distinct chart types (Bar, Line, Pie, Radar, Scatter, Area, Heatmap, and Treemap) with custom theme support.
@@ -38,7 +38,7 @@ This is a monorepo containing both the frontend client and the backend server se
 
 ---
 
-## 🚀 Quick Start Setup
+##  Quick Start Setup
 
 ### Prerequisites
 - Node.js (v18+)
