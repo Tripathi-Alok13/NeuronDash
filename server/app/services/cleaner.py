@@ -129,23 +129,26 @@ class DataCleaner:
         col_name_lower = col_name.lower()
         is_date_name = "date" in col_name_lower or "time" in col_name_lower or col_name_lower.endswith("dt")
         
+        # Take a sample of the first 100 values to speed up inference on Render
+        sample = non_null.head(100)
+        
         # Try parsing as datetime if name indicates date/time or string matches date patterns
         if series.dtype == 'object' or is_date_name:
             try:
                 if is_date_name:
-                    pd.to_datetime(non_null, errors='raise')
+                    pd.to_datetime(sample, errors='raise')
                     return "datetime"
                 else:
                     # check if the string format looks like a date/time (contains - or / or :)
-                    has_date_chars = non_null.astype(str).str.contains(r'[-/:]').any()
+                    has_date_chars = sample.astype(str).str.contains(r'[-/:]').any()
                     if has_date_chars:
-                        pd.to_datetime(non_null, errors='raise')
+                        pd.to_datetime(sample, errors='raise')
                         return "datetime"
             except (ValueError, TypeError):
                 pass
         
         # Try numeric conversion
-        numeric_conv = pd.to_numeric(non_null, errors='coerce')
+        numeric_conv = pd.to_numeric(sample, errors='coerce')
         if not numeric_conv.isna().any():
             # Check for ID patterns in name or unique integer key
             is_id_name = (
@@ -162,7 +165,7 @@ class DataCleaner:
             is_int = (numeric_conv % 1 == 0).all()
             if is_int:
                 # Check if unique per row
-                is_unique_int = (non_null.nunique() == len(non_null))
+                is_unique_int = (sample.nunique() == len(sample))
                 
             if is_id_name or is_unique_int:
                 return "identifier"
@@ -171,7 +174,7 @@ class DataCleaner:
             
         # Try date conversion as a fallback
         try:
-            pd.to_datetime(non_null, errors='raise')
+            pd.to_datetime(sample, errors='raise')
             return "datetime"
         except (ValueError, TypeError):
             pass
