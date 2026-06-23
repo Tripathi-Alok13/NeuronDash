@@ -25,7 +25,7 @@ import {
   FileText
 } from "lucide-react";
 
-const BACKEND_URL = "http://localhost:8000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 interface Message {
   id: string;

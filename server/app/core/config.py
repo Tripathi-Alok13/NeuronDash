@@ -25,6 +25,9 @@ class Settings(BaseSettings):
     @property
     def get_database_url(self) -> str:
         if self.DATABASE_URL:
+            # Render PostgreSQL URL starts with postgres://, but SQLAlchemy 2.0 requires postgresql://
+            if self.DATABASE_URL.startswith("postgres://"):
+                return self.DATABASE_URL.replace("postgres://", "postgresql://", 1)
             return self.DATABASE_URL
         return "sqlite:///./neurondash.db"
 

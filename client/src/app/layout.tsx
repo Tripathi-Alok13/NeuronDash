@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("http://localhost:3000"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : "http://localhost:3000"),
   title: "NeuronDash - AI Data Analytics Sandbox",
   description: "Interactive data analysis, bento dashboards, cleaning, and diagnostics in seconds.",
   icons: {
