@@ -1,0 +1,6 @@
+Name,Age,GPA,Attendance,Subject
+Alice,20,3.8,0.95,Math
+Bob,22,2.9,0.85,Science
+Charlie,,3.4,0.92,Math
+David,21,5.2,,Science
+Bob,22,2.9,0.85,Science

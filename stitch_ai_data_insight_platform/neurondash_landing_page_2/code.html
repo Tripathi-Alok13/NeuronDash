@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NeuronDash | Turn Data Into Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#3d4042",
+                    "surface-dim": "#cbdbf5",
+                    "surface-container": "#e5eeff",
+                    "tertiary": "#5c5f61",
+                    "surface-tint": "#006e2f",
+                    "on-primary-fixed": "#002109",
+                    "primary-fixed-dim": "#4ae176",
+                    "on-tertiary-fixed-variant": "#444749",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed": "#dae2fd",
+                    "on-secondary-fixed": "#131b2e",
+                    "primary": "#006e2f",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#dae2fd",
+                    "surface-container-lowest": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "background": "#f8f9ff",
+                    "primary-fixed": "#6bff8f",
+                    "tertiary-container": "#a9acae",
+                    "surface-container-low": "#eff4ff",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "inverse-surface": "#213145",
+                    "on-tertiary-fixed": "#191c1e",
+                    "outline": "#6d7b6c",
+                    "inverse-primary": "#4ae176",
+                    "on-primary-fixed-variant": "#005321",
+                    "surface-container-high": "#dce9ff",
+                    "on-surface-variant": "#3d4a3d",
+                    "on-error": "#ffffff",
+                    "primary-container": "#22c55e",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "tertiary-fixed": "#e0e3e5",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary": "#565e74",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-secondary-container": "#5c647a",
+                    "on-background": "#0b1c30",
+                    "on-primary-container": "#004b1e",
+                    "surface-bright": "#f8f9ff",
+                    "outline-variant": "#bccbb9",
+                    "surface": "#f8f9ff",
+                    "surface-variant": "#d3e4fe",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "lg": "40px",
+                    "xl": "64px",
+                    "margin": "32px",
+                    "sm": "16px",
+                    "gutter": "24px",
+                    "xs": "8px",
+                    "md": "24px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-sm": ["Geist"],
+                    "headline-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #006e2f 0%, #22c55e 100%);
+        }
+        .neural-glow {
+            box-shadow: 0 0 40px rgba(34, 197, 94, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Header Navigation -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
+<nav class="flex justify-between items-center h-20 px-8 max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<img alt="NeuronDash Logo" class="h-10 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAE20KfX3w4cwxqgf-DXJ_z6wAONXzoYgASVEc2MEHnfAv-ekVjgKN8sz5-MnwjHxRf1xiYbh2-yu0sGiBoL5483zzVu-_b7mS3rzOddOq8dEMlWO89tDjS038_187ycgA_TaUZPpFlp_Y2CzipST-yWj4rPWSPuWA8pmN97gLSpyF-X56pW4QNvgo3BPJsxXuVQpOxgmphVf_WABORraiSmlRGgvQybwJ2SL5PXtlOZc6nvugHxqWBLUGq3VKdTWPICgfCVT0Trg"/>
+<span class="font-display-lg text-headline-lg font-bold text-on-surface">NeuronDash</span>
+</div>
+<div class="hidden md:flex items-center gap-8 font-body-md text-body-md">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#features">Features</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#templates">Templates</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#pricing">Pricing</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#about">About</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#contact">Contact</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2 rounded-full font-semibold text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200">Login</button>
+<button class="px-6 py-2 rounded-full font-semibold kinetic-gradient text-white scale-95 active:scale-90 transition-transform">Get Started</button>
+</div>
+</nav>
+</header>
+<!-- Hero Section -->
+<section class="pt-40 pb-20 px-8">
+<div class="max-w-7xl mx-auto text-center">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-container/10 text-primary font-semibold text-sm mb-8 border border-primary/20">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                AI-Powered Data Intelligence
+            </div>
+<h1 class="font-display-lg text-6xl md:text-7xl font-extrabold mb-6 tracking-tight">
+                Turn Any File Into <span class="text-primary italic">Actionable Insights</span>
+</h1>
+<p class="max-w-2xl mx-auto text-on-surface-variant text-xl leading-relaxed mb-10">
+                Upload Excel, CSV, PDF, or Word files. Our AI cleans your data, generates reports, and builds professional dashboards in minutes.
+            </p>
+<div class="flex flex-col sm:flex-row justify-center gap-4 mb-20">
+<button class="px-10 py-4 rounded-full font-bold kinetic-gradient text-white shadow-xl shadow-primary/20 hover:scale-105 transition-transform">Start Free</button>
+<button class="px-10 py-4 rounded-full font-bold glass-card flex items-center justify-center gap-2 hover:bg-white transition-all">
+<span class="material-symbols-outlined">play_circle</span>
+                    Watch Demo
+                </button>
+</div>
+<!-- Dashboard Mockup -->
+<div class="relative max-w-6xl mx-auto group">
+<div class="absolute -inset-4 kinetic-gradient rounded-[2.5rem] opacity-20 blur-3xl group-hover:opacity-30 transition-opacity"></div>
+<div class="relative bg-white rounded-[2rem] border border-outline-variant/30 overflow-hidden shadow-2xl p-2 md:p-4">
+<div class="flex items-center gap-2 mb-4 px-4 pt-2">
+<div class="w-3 h-3 rounded-full bg-red-400"></div>
+<div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+<div class="w-3 h-3 rounded-full bg-green-400"></div>
+<div class="ml-4 h-6 w-1/3 bg-surface-container rounded-full opacity-50"></div>
+</div>
+<img alt="Dashboard Mockup" class="w-full h-auto rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASBJlYzvWLD5MsavxUKqc-DPNRT9JMnZPcvi2LT-IR7DJs5817J2BWK_QWLR8Wfili8DjtxeBr17TuNLCxVxN3qN71J-ga7P6VeWOC4PyrRGCUgoCG84-STC3um8jAwuXZsnZeoUiP7pagYTqQ5aUxBNsFKwddoyYgiyFJAh4K9Gh4N0QKLHpMmHlbbow-IWkNoVxRxqSgSdAPB13tzjd8RIhGNq6nByimTtZULmNpY_UspQqnTO3CNemxweZMPx1BHeHxyoRByQ"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Trust Section -->
+<section class="py-16 border-y border-outline-variant/20 bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
+<span class="font-label-sm uppercase tracking-widest text-on-tertiary-container">Trusted for:</span>
+<div class="flex flex-wrap justify-center gap-8 md:gap-12 font-headline-lg-mobile font-bold text-on-surface-variant">
+<span>Student Analytics</span>
+<span>Business Intelligence</span>
+<span>Research Reports</span>
+<span>Financial Analytics</span>
+<span>HR Analytics</span>
+</div>
+</div>
+</section>
+<!-- Features Section (Bento Grid) -->
+<section class="py-32 px-8" id="features">
+<div class="max-w-7xl mx-auto">
+<div class="mb-20 text-center">
+<h2 class="font-headline-lg text-4xl md:text-5xl font-bold mb-4">Powerful Features for Data Pros</h2>
+<p class="text-on-surface-variant text-lg">Sophisticated tools designed for ultimate efficiency.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Large Feature -->
+<div class="md:col-span-2 glass-card p-10 rounded-[2rem] relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-8">
+<span class="material-symbols-outlined text-6xl text-primary opacity-20" style="font-variation-settings: 'FILL' 1;">auto_delete</span>
+</div>
+<div class="relative z-10 max-w-sm">
+<h3 class="font-headline-lg text-2xl font-bold mb-4">AI Data Cleaning</h3>
+<p class="text-on-surface-variant mb-6">Our algorithms automatically identify outliers, normalize entries, and handle missing data with clinical precision.</p>
+<ul class="space-y-3">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Automatic normalization</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Outlier detection</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Schema mapping</li>
+</ul>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass-card p-10 rounded-[2rem] hover:translate-y-[-4px] transition-transform">
+<span class="material-symbols-outlined text-4xl text-primary mb-6">dashboard_customize</span>
+<h3 class="font-headline-lg text-xl font-bold mb-3">Dashboard Generation</h3>
+<p class="text-on-surface-variant">From raw data to visual story in 60 seconds. Instant, interactive charts.</p>
+</div>
+<!-- Card 3 -->
+<div class="glass-card p-10 rounded-[2rem] hover:translate-y-[-4px] transition-transform">
+<span class="material-symbols-outlined text-4xl text-primary mb-6">edit_note</span>
+<h3 class="font-headline-lg text-xl font-bold mb-3">AI Report Writing</h3>
+<p class="text-on-surface-variant">Narrative summaries that explain the "why" behind the numbers, ready for export.</p>
+</div>
+<!-- Card 4 -->
+<div class="glass-card p-10 rounded-[2rem] hover:translate-y-[-4px] transition-transform">
+<span class="material-symbols-outlined text-4xl text-primary mb-6">upload_file</span>
+<h3 class="font-headline-lg text-xl font-bold mb-3">Multi-File Upload</h3>
+<p class="text-on-surface-variant">Combine PDFs, Excel, and Word files into a single source of truth.</p>
+</div>
+<!-- Card 5 -->
+<div class="glass-card p-10 rounded-[2rem] hover:translate-y-[-4px] transition-transform">
+<span class="material-symbols-outlined text-4xl text-primary mb-6">forum</span>
+<h3 class="font-headline-lg text-xl font-bold mb-3">Natural Language</h3>
+<p class="text-on-surface-variant">Ask your data questions in plain English. "What was last year's churn rate?"</p>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works (Timeline) -->
+<section class="py-32 px-8 bg-on-tertiary-container text-white overflow-hidden">
+<div class="max-w-7xl mx-auto">
+<h2 class="font-headline-lg text-4xl font-bold mb-20 text-center">Seamless Workflow</h2>
+<div class="relative">
+<!-- Line -->
+<div class="absolute top-1/2 left-0 w-full h-1 bg-white/10 -translate-y-1/2 hidden lg:block"></div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 relative z-10">
+<div class="text-center group">
+<div class="w-16 h-16 mx-auto rounded-full bg-primary flex items-center justify-center font-bold text-2xl mb-6 shadow-lg group-hover:scale-110 transition-transform">1</div>
+<h4 class="font-bold mb-2">Upload</h4>
+<p class="text-surface-dim text-sm">Drag &amp; drop your files.</p>
+</div>
+<div class="text-center group">
+<div class="w-16 h-16 mx-auto rounded-full bg-surface-container-low/20 border border-white/20 flex items-center justify-center font-bold text-2xl mb-6 shadow-lg group-hover:bg-primary transition-colors">2</div>
+<h4 class="font-bold mb-2">Clean</h4>
+<p class="text-surface-dim text-sm">AI handles formatting.</p>
+</div>
+<div class="text-center group">
+<div class="w-16 h-16 mx-auto rounded-full bg-surface-container-low/20 border border-white/20 flex items-center justify-center font-bold text-2xl mb-6 shadow-lg group-hover:bg-primary transition-colors">3</div>
+<h4 class="font-bold mb-2">Analyze</h4>
+<p class="text-surface-dim text-sm">Insights detected.</p>
+</div>
+<div class="text-center group">
+<div class="w-16 h-16 mx-auto rounded-full bg-surface-container-low/20 border border-white/20 flex items-center justify-center font-bold text-2xl mb-6 shadow-lg group-hover:bg-primary transition-colors">4</div>
+<h4 class="font-bold mb-2">Visualize</h4>
+<p class="text-surface-dim text-sm">Dashboards built.</p>
+</div>
+<div class="text-center group">
+<div class="w-16 h-16 mx-auto rounded-full bg-surface-container-low/20 border border-white/20 flex items-center justify-center font-bold text-2xl mb-6 shadow-lg group-hover:bg-primary transition-colors">5</div>
+<h4 class="font-bold mb-2">Refine</h4>
+<p class="text-surface-dim text-sm">Chat to adjust.</p>
+</div>
+<div class="text-center group">
+<div class="w-16 h-16 mx-auto rounded-full bg-surface-container-low/20 border border-white/20 flex items-center justify-center font-bold text-2xl mb-6 shadow-lg group-hover:bg-primary transition-colors">6</div>
+<h4 class="font-bold mb-2">Share</h4>
+<p class="text-surface-dim text-sm">Export and present.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Templates Section -->
+<section class="py-32 px-8" id="templates">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+<div>
+<h2 class="font-headline-lg text-4xl font-bold mb-4">Choose Your Starting Point</h2>
+<p class="text-on-surface-variant">Industry-specific layouts designed for immediate clarity.</p>
+</div>
+<button class="text-primary font-bold flex items-center gap-2 hover:underline">
+                    View Library
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+<!-- Template Card -->
+<div class="group cursor-pointer">
+<div class="aspect-video bg-surface-container rounded-2xl mb-4 overflow-hidden border border-outline-variant/30">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="A professional sales executive dashboard template with clean bar charts, line graphs, and key performance indicators in a light-mode aesthetic with green accents. The layout is organized and sophisticated, perfect for corporate meetings and high-level strategy sessions in a modern tech office environment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDojzRnMjThn3nWmjAONWFU8vG3lyu2us_bj4GooIPvqUWivn1IPyBIVq5UbgqNrBzfYJE7_Ba-RbWAOrajoMtMiQ-iZTBT1AhY6xV7L2dIiK1WcRmJBaipjBvUT6E_GpFDI0t7pN3TmrnnpD8xSWnzgXrGB9dkDrFoehtJE7i9VOpq0pj1A8V9D83AhMogxxTp7UvXjFnhr6a-zvZfUTjqIPw9UtTZFywrV2_PoUnC0mYSge4SQOp_hsI9EE8_PbZ-zRnz3JhuDA')">
+</div>
+</div>
+<h4 class="font-bold text-lg">Executive Dash</h4>
+<p class="text-sm text-on-surface-variant">High-level KPIs for leadership.</p>
+</div>
+<div class="group cursor-pointer">
+<div class="aspect-video bg-surface-container rounded-2xl mb-4 overflow-hidden border border-outline-variant/30">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="A vibrant student analytics dashboard template featuring progress bars, grade distribution charts, and task management lists. The design uses soft green and grey tones to create a focused but friendly study environment. Minimalist icons represent different courses and subjects, emphasizing a digital education workspace." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD7AcZs0boyP29GOBOw0pw69gLCY6ZKHdHBi6mWcg3wOwHhZ4557VkBAeErWce0GahSYn4kzmBFH0j-UfSYbPQKIdEGMBAOGDRiZb_aR3_CPomUGv9UsJywuOv9OvipAMrnW1aOpDPI2ub_PTb3taK_xuJbmmIeiZlJ7V82DNfPRyQSS71U2OBe2OHGqsjkcmd8n7hw-hAf_K8nayy4wMnpxn69AG70ftlezJdeYZNxoxutdl1FuTPTrD3Oc7YAEcmi0eFHU4t9YQ')">
+</div>
+</div>
+<h4 class="font-bold text-lg">Student Progress</h4>
+<p class="text-sm text-on-surface-variant">Track grades and milestones.</p>
+</div>
+<div class="group cursor-pointer">
+<div class="aspect-video bg-surface-container rounded-2xl mb-4 overflow-hidden border border-outline-variant/30">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="A financial reporting dashboard showcasing revenue streams, expenditure analysis, and profit margins. The UI is data-dense yet breathable, using professional typography and subtle gradients. The color scheme is corporate and reliable, with clear indicators for fiscal health and investment growth." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBINn3_G6dVW6gXCr7qOVSAxGM_3Gc6yjUK_rzieB2N_5X0aWwrwf_M8NG6BC2-oCBRMcL--KaoEkN7pT-Z4gYcbDlaGHV4lJGNtUK8-mfTj6jZUVGnzSqLT7uqO_8m1ub9Q6Ifbx6vFRh8NbEwGG2TW4tWHAhx4OhLLJXY1GEURxdwskEDAD5wCU_9SLMtDfFPKttllLPSuAsxReGoYINqMpzG9YeZuK_JCQVJyh7wcPcT6R4ixamZ2aaO-lWZnrlrSm4rsMA46g')">
+</div>
+</div>
+<h4 class="font-bold text-lg">Finance Report</h4>
+<p class="text-sm text-on-surface-variant">P&amp;L and cash flow summaries.</p>
+</div>
+<div class="group cursor-pointer">
+<div class="aspect-video bg-primary flex items-center justify-center rounded-2xl mb-4 relative overflow-hidden group">
+<div class="absolute inset-0 kinetic-gradient opacity-80"></div>
+<div class="relative text-white text-center p-4">
+<span class="material-symbols-outlined text-4xl mb-2" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h4 class="font-bold">AI Auto-Dash</h4>
+<p class="text-xs opacity-90">Let AI decide the layout.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- AI Chat Showcase -->
+<section class="py-32 px-8 bg-surface-container-low overflow-hidden">
+<div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20">
+<div class="flex-1">
+<div class="glass-card rounded-[2rem] shadow-2xl overflow-hidden border border-white max-w-lg mx-auto lg:mx-0">
+<div class="bg-on-tertiary-container p-6 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full kinetic-gradient flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm">smart_toy</span>
+</div>
+<span class="text-white font-bold">NeuronDash AI</span>
+</div>
+<div class="p-8 space-y-6">
+<div class="flex justify-end">
+<div class="bg-primary text-white p-4 rounded-2xl rounded-tr-none max-w-[80%] text-sm">
+                                Analyze this sales data and create a dashboard for the executive team.
+                            </div>
+</div>
+<div class="flex justify-start">
+<div class="bg-white border border-outline-variant p-4 rounded-2xl rounded-tl-none max-w-[80%] text-sm shadow-sm">
+<p class="mb-3">Revenue increased by <span class="text-primary font-bold">18%</span> compared to last quarter. I found 3 anomalies in the Q2 logistics data.</p>
+<p>I've generated a 4-tab executive dashboard with live filters. View it below.</p>
+</div>
+</div>
+<div class="animate-pulse bg-surface-container h-4 w-1/2 rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="flex-1">
+<h2 class="font-headline-lg text-4xl md:text-5xl font-bold mb-8">Conversational Intelligence</h2>
+<p class="text-on-surface-variant text-lg mb-8 leading-relaxed">
+                    Stop wrestling with pivot tables. Talk to your data as if it were an analyst. Ask for trends, find mistakes, or request entire dashboard re-designs through simple text commands.
+                </p>
+<div class="grid grid-cols-2 gap-6">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">psychology</span>
+<div>
+<h5 class="font-bold">Anomaly Detection</h5>
+<p class="text-sm text-on-surface-variant">Spot errors in seconds.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">trending_up</span>
+<div>
+<h5 class="font-bold">Trend Forecasting</h5>
+<p class="text-sm text-on-surface-variant">Predict future outcomes.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Benefits Section -->
+<section class="py-32 px-8">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+<div class="space-y-4">
+<div class="w-12 h-12 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<h3 class="font-bold text-xl">Save Hours</h3>
+<p class="text-on-surface-variant">Automate the tedious 80% of data prep and chart building.</p>
+</div>
+<div class="space-y-4">
+<div class="w-12 h-12 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<h3 class="font-bold text-xl">No Expertise Required</h3>
+<p class="text-on-surface-variant">Advanced analytics accessible to everyone, not just data scientists.</p>
+</div>
+<div class="space-y-4">
+<div class="w-12 h-12 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<h3 class="font-bold text-xl">Enterprise Ready</h3>
+<p class="text-on-surface-variant">Role-based access, SSO, and bank-grade data security protocols.</p>
+</div>
+<div class="space-y-4">
+<div class="w-12 h-12 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<h3 class="font-bold text-xl">Fast &amp; Secure</h3>
+<p class="text-on-surface-variant">Real-time processing with end-to-end encryption on all uploads.</p>
+</div>
+</div>
+</section>
+<!-- Pricing Section -->
+<section class="py-32 px-8 bg-surface-container-lowest" id="pricing">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-20">
+<h2 class="font-headline-lg text-4xl font-bold mb-4">Simple, Scalable Pricing</h2>
+<p class="text-on-surface-variant">Choose the plan that fits your intelligence needs.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Free -->
+<div class="glass-card p-10 rounded-[2.5rem] border-outline-variant/30 flex flex-col h-full">
+<div class="mb-8">
+<h4 class="font-bold text-xl mb-2">Free</h4>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-black">$0</span>
+<span class="text-on-surface-variant">/mo</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-sm"><span class="material-symbols-outlined text-primary text-sm">done</span> 5 Uploads per month</li>
+<li class="flex items-center gap-3 text-sm"><span class="material-symbols-outlined text-primary text-sm">done</span> Basic AI Cleaning</li>
+<li class="flex items-center gap-3 text-sm"><span class="material-symbols-outlined text-primary text-sm">done</span> Web-only dashboards</li>
+</ul>
+<button class="w-full py-4 rounded-full border-2 border-outline-variant font-bold hover:bg-surface-container-low transition-colors">Start for Free</button>
+</div>
+<!-- Pro -->
+<div class="glass-card p-10 rounded-[2.5rem] border-primary/50 relative kinetic-gradient text-white flex flex-col h-full shadow-2xl scale-105 z-10">
+<div class="absolute top-0 right-10 -translate-y-1/2 px-4 py-1 bg-white text-primary text-xs font-bold rounded-full">POPULAR</div>
+<div class="mb-8">
+<h4 class="font-bold text-xl mb-2">Pro</h4>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-black">$49</span>
+<span class="text-white/80">/mo</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-sm"><span class="material-symbols-outlined text-white text-sm">done</span> Unlimited Uploads</li>
+<li class="flex items-center gap-3 text-sm"><span class="material-symbols-outlined text-white text-sm">done</span> Advanced AI Reporting</li>
+<li class="flex items-center gap-3 text-sm"><span class="material-symbols-outlined text-white text-sm">done</span> PDF &amp; Excel Export</li>
+<li class="flex items-center gap-3 text-sm"><span class="material-symbols-outlined text-white text-sm">done</span> Priority Support</li>
+</ul>
+<button class="w-full py-4 rounded-full bg-white text-primary font-bold hover:scale-105 transition-transform shadow-lg">Upgrade Now</button>
+</div>
+<!-- Enterprise -->
+<div class="glass-card p-10 rounded-[2.5rem] border-outline-variant/30 flex flex-col h-full">
+<div class="mb-8">
+<h4 class="font-bold text-xl mb-2">Enterprise</h4>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-black">Custom</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3 text-sm"><span class="material-symbols-outlined text-primary text-sm">done</span> Custom AI Models</li>
+<li class="flex items-center gap-3 text-sm"><span class="material-symbols-outlined text-primary text-sm">done</span> Dedicated Account Manager</li>
+<li class="flex items-center gap-3 text-sm"><span class="material-symbols-outlined text-primary text-sm">done</span> On-premise Deployment</li>
+</ul>
+<button class="w-full py-4 rounded-full border-2 border-outline-variant font-bold hover:bg-surface-container-low transition-colors">Contact Sales</button>
+</div>
+</div>
+</div>
+</section>
+<!-- FAQ Accordion -->
+<section class="py-32 px-8 max-w-3xl mx-auto">
+<h2 class="font-headline-lg text-4xl font-bold mb-12 text-center">Frequently Asked Questions</h2>
+<div class="space-y-4">
+<details class="group bg-white rounded-2xl border border-outline-variant/30 overflow-hidden" open="">
+<summary class="flex justify-between items-center p-6 cursor-pointer font-bold list-none">
+                    Is my data secure?
+                    <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-6 pb-6 text-on-surface-variant text-sm">
+                    Yes, we use AES-256 encryption at rest and TLS 1.3 in transit. Your data is never used to train our global models unless you explicitly opt-in.
+                </div>
+</details>
+<details class="group bg-white rounded-2xl border border-outline-variant/30 overflow-hidden">
+<summary class="flex justify-between items-center p-6 cursor-pointer font-bold list-none">
+                    What file types are supported?
+                    <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-6 pb-6 text-on-surface-variant text-sm">
+                    We support .xlsx, .csv, .pdf, .docx, and .txt files. Our AI is specialized in parsing complex tables from within PDFs.
+                </div>
+</details>
+<details class="group bg-white rounded-2xl border border-outline-variant/30 overflow-hidden">
+<summary class="flex justify-between items-center p-6 cursor-pointer font-bold list-none">
+                    Can I export my dashboards?
+                    <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-6 pb-6 text-on-surface-variant text-sm">
+                    Absolutely. You can export static versions as PDF or SVG, or export the cleaned data back into Excel/CSV format.
+                </div>
+</details>
+<details class="group bg-white rounded-2xl border border-outline-variant/30 overflow-hidden">
+<summary class="flex justify-between items-center p-6 cursor-pointer font-bold list-none">
+                    Do I need to know how to code?
+                    <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-6 pb-6 text-on-surface-variant text-sm">
+                    No coding required. NeuronDash is built for business users, researchers, and students. If you can type a question, you can use our platform.
+                </div>
+</details>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant py-16 px-8">
+<div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-16">
+<div class="col-span-2">
+<div class="flex items-center gap-2 mb-6">
+<img alt="NeuronDash Logo" class="h-8" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAE20KfX3w4cwxqgf-DXJ_z6wAONXzoYgASVEc2MEHnfAv-ekVjgKN8sz5-MnwjHxRf1xiYbh2-yu0sGiBoL5483zzVu-_b7mS3rzOddOq8dEMlWO89tDjS038_187ycgA_TaUZPpFlp_Y2CzipST-yWj4rPWSPuWA8pmN97gLSpyF-X56pW4QNvgo3BPJsxXuVQpOxgmphVf_WABORraiSmlRGgvQybwJ2SL5PXtlOZc6nvugHxqWBLUGq3VKdTWPICgfCVT0Trg"/>
+<span class="font-headline-lg text-headline-lg-mobile font-bold text-on-surface">NeuronDash</span>
+</div>
+<p class="text-on-surface-variant max-w-xs mb-6">
+                    Turning data into intelligence with the power of modern AI. Built for the next generation of decision-makers.
+                </p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">public</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">share</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">mail</span>
+</div>
+</div>
+<div>
+<h5 class="font-bold mb-6">Product</h5>
+<ul class="space-y-4 text-sm text-on-surface-variant">
+<li><a class="hover:text-primary" href="#">Features</a></li>
+<li><a class="hover:text-primary" href="#">Pricing</a></li>
+<li><a class="hover:text-primary" href="#">Templates</a></li>
+<li><a class="hover:text-primary" href="#">API Docs</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold mb-6">Company</h5>
+<ul class="space-y-4 text-sm text-on-surface-variant">
+<li><a class="hover:text-primary" href="#">About Us</a></li>
+<li><a class="hover:text-primary" href="#">Careers</a></li>
+<li><a class="hover:text-primary" href="#">Blog</a></li>
+<li><a class="hover:text-primary" href="#">Security</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold mb-6">Resources</h5>
+<ul class="space-y-4 text-sm text-on-surface-variant">
+<li><a class="hover:text-primary" href="#">Help Center</a></li>
+<li><a class="hover:text-primary" href="#">Guides</a></li>
+<li><a class="hover:text-primary" href="#">Status</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold mb-6">Legal</h5>
+<ul class="space-y-4 text-sm text-on-surface-variant">
+<li><a class="hover:text-primary" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-primary" href="#">Terms of Service</a></li>
+<li><a class="hover:text-primary" href="#">Cookies</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-7xl mx-auto pt-8 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-on-surface-variant">
+<p>© 2024 NeuronDash AI. Turning data into intelligence.</p>
+<div class="flex gap-6">
+<span>English (US)</span>
+<span>Cookie Settings</span>
+</div>
+</div>
+</footer>
+<script>
+        // Smooth reveal on scroll logic
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+
+        // Instant activation for top nav
+        document.querySelector('header').classList.remove('opacity-0', 'translate-y-10');
+    </script>
+</body></html>

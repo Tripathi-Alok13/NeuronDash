@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Geist:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #006e2f;
+  --color-primary-container: #22c55e;
+  --color-on-primary-container: #004b1e;
+  
+  --color-background: var(--color-background);
+  --color-on-background: var(--color-on-background);
+  --color-surface: var(--color-surface);
+  --color-on-surface: var(--color-on-surface);
+  --color-surface-container: var(--color-surface-container);
+  --color-surface-container-low: var(--color-surface-container-low);
+  --color-surface-container-high: var(--color-surface-container-high);
+  --color-surface-container-lowest: var(--color-surface-container-lowest);
+  --color-surface-container-highest: var(--color-surface-container-highest);
+  --color-on-surface-variant: var(--color-on-surface-variant);
+  --color-outline-variant: var(--color-outline-variant);
+  --color-on-tertiary-container: var(--color-on-tertiary-container);
+  --color-secondary: var(--color-secondary);
+  --color-tertiary: var(--color-tertiary);
+  --color-error: var(--color-error);
+  
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'Geist', monospace;
+}
+
+:root {
+  --color-background: #f8f9ff;
+  --color-on-background: #0b1c30;
+  --color-surface: #f8f9ff;
+  --color-on-surface: #0b1c30;
+  --color-surface-container: #e5eeff;
+  --color-surface-container-low: #eff4ff;
+  --color-surface-container-high: #dce9ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-highest: #d3e4fe;
+  --color-on-surface-variant: #3d4a3d;
+  --color-outline-variant: #bccbb9;
+  --color-on-tertiary-container: #3d4042;
+  --color-secondary: #565e74;
+  --color-tertiary: #5c5f61;
+  --color-error: #ba1a1a;
+}
+
+.dark {
+  --color-background: #0f172a;
+  --color-on-background: #f8fafc;
+  --color-surface: #1e293b;
+  --color-on-surface: #f8fafc;
+  --color-surface-container: #334155;
+  --color-surface-container-low: #1e293b;
+  --color-surface-container-high: #475569;
+  --color-surface-container-lowest: #0f172a;
+  --color-surface-container-highest: #64748b;
+  --color-on-surface-variant: #cbd5e1;
+  --color-outline-variant: #334155;
+  --color-on-tertiary-container: #cbd5e1;
+  --color-secondary: #94a3b8;
+  --color-tertiary: #94a3b8;
+  --color-error: #f87171;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-on-background);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.dark .glass-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+.kinetic-gradient {
+  background: linear-gradient(135deg, #006e2f 0%, #22c55e 100%);
+}
+
+.neural-glow {
+  box-shadow: 0 0 40px rgba(34, 197, 94, 0.15);
+}
+
+.drag-dash {
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%23006E2FFF' stroke-width='2' stroke-dasharray='8%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+}
+
+@media print {
+  /* Hide UI elements during print */
+  .no-print,
+  aside,
+  header,
+  button,
+  .drag-dash,
+  [role="button"] {
+    display: none !important;
+  }
+  
+  /* Reset workspace page margins and layouts */
+  main {
+    margin-left: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+  
+  .mt-16 {
+    margin-top: 0 !important;
+  }
+  
+  /* Stretch Dashboard widgets grid */
+  .max-w-6xl {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  
+  /* Format grids and widgets for PDF page breaks */
+  .grid {
+    gap: 20px !important;
+  }
+  
+  .rounded-3xl {
+    border-radius: 16px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+  }
+}
+
+
