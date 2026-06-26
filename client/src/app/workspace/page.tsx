@@ -2245,8 +2245,8 @@ export default function WorkspacePage() {
           )}
 
           {/* Dashboard Pane */}
-          {activeTab === "dashboard" && (
-            <div className="flex-1 flex flex-col h-full overflow-y-auto p-8 pb-12">
+          {(activeTab === "dashboard" || activeTab === "report") && (
+            <div className={`flex-1 flex flex-col h-full overflow-y-auto p-8 pb-12 ${activeTab !== "dashboard" ? "hidden print:flex" : "flex"}`}>
               <div className="max-w-6xl mx-auto w-full space-y-8">
                 
                 {/* Printable Header - Only visible during print */}
@@ -2589,8 +2589,8 @@ export default function WorkspacePage() {
             </div>
           )}
 
-          {activeTab === "report" && (
-            <div className="flex-1 flex flex-col h-full overflow-y-auto p-8 pb-12 animate-fade-in">
+          {(activeTab === "report" || activeTab === "dashboard") && (
+            <div className={`flex-1 flex flex-col h-full overflow-y-auto p-8 pb-12 animate-fade-in print-page-break ${activeTab !== "report" ? "hidden print:flex" : "flex"}`}>
               <div className="max-w-6xl mx-auto w-full space-y-8">
                 
                 {/* Printable Header */}

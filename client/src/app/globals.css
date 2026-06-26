@@ -135,6 +135,11 @@ body {
     box-shadow: none !important;
     page-break-inside: avoid !important;
   }
+
+  .print-page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
 }
 
 
