@@ -142,7 +142,7 @@ export default function LandingPage() {
           {/* Dashboard Mockup */}
           <div className="relative max-w-5xl mx-auto group">
             <div className="absolute -inset-4 kinetic-gradient rounded-[2.5rem] opacity-20 blur-3xl group-hover:opacity-25 transition-opacity"></div>
-            <div className="relative bg-white rounded-[2rem] border border-outline-variant/30 overflow-hidden shadow-2xl p-2 md:p-4">
+            <div className="relative bg-surface-container-lowest rounded-[2rem] border border-outline-variant/30 overflow-hidden shadow-2xl p-2 md:p-4">
               <div className="flex items-center gap-2 mb-4 px-4 pt-2 border-b border-surface-container/50 pb-4">
                 <div className="w-3 h-3 rounded-full bg-red-400"></div>
                 <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
@@ -153,7 +153,7 @@ export default function LandingPage() {
               {/* Premium Dashboard Preview */}
               <div className="bg-surface-container-low rounded-xl p-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
                 {/* Visual KPI 1 */}
-                <div className="bg-white p-5 rounded-2xl border border-outline-variant/20 shadow-sm">
+                <div className="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/20 shadow-sm">
                   <div className="flex justify-between items-start text-on-surface-variant">
                     <span className="text-xs font-semibold uppercase tracking-wider">Active Revenue</span>
                     <TrendingUp className="w-4 h-4 text-primary" />
@@ -162,7 +162,7 @@ export default function LandingPage() {
                   <span className="text-xs text-primary font-bold mt-1 block">▲ +12.4% vs Q3</span>
                 </div>
                 {/* Visual KPI 2 */}
-                <div className="bg-white p-5 rounded-2xl border border-outline-variant/20 shadow-sm">
+                <div className="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/20 shadow-sm">
                   <div className="flex justify-between items-start text-on-surface-variant">
                     <span className="text-xs font-semibold uppercase tracking-wider">Data Accuracy</span>
                     <Activity className="w-4 h-4 text-primary" />
@@ -171,7 +171,7 @@ export default function LandingPage() {
                   <span className="text-xs text-primary font-bold mt-1 block">Cleaned automatically</span>
                 </div>
                 {/* Visual KPI 3 */}
-                <div className="bg-white p-5 rounded-2xl border border-outline-variant/20 shadow-sm">
+                <div className="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/20 shadow-sm">
                   <div className="flex justify-between items-start text-on-surface-variant">
                     <span className="text-xs font-semibold uppercase tracking-wider">Anomaly Sweeps</span>
                     <ShieldCheck className="w-4 h-4 text-primary" />
@@ -180,7 +180,7 @@ export default function LandingPage() {
                   <span className="text-xs text-on-surface-variant font-bold mt-1 block">Resolved in workspace</span>
                 </div>
                 {/* Interactive Chart Visualizer */}
-                <div className="bg-white p-6 rounded-2xl border border-outline-variant/20 shadow-sm md:col-span-3 h-52 flex flex-col justify-between">
+                <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/20 shadow-sm md:col-span-3 h-52 flex flex-col justify-between">
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-sm font-bold text-on-surface">Regional Growth Correlation</span>
                     <span className="text-xs font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary">Cleaned Output</span>

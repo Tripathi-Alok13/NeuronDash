@@ -275,7 +275,7 @@ function LoginContent() {
         </div>
 
         {/* Auth Glass Card */}
-        <div className="glass-card rounded-[2.5rem] border border-outline-variant/30 p-8 shadow-2xl bg-white/70 backdrop-blur-xl relative overflow-hidden">
+        <div className="glass-card rounded-[2.5rem] border border-outline-variant/30 p-8 shadow-2xl bg-surface-container-lowest/70 backdrop-blur-xl relative overflow-hidden">
           
           {/* Tab Switcher */}
           <div className="flex bg-surface-container-high/40 p-1.5 rounded-full mb-8 border border-outline-variant/10">
@@ -283,7 +283,7 @@ function LoginContent() {
               onClick={() => { setActiveTab("signin"); setErrorMsg(null); }}
               className={`flex-1 py-3 text-sm font-bold rounded-full transition-all duration-300 ${
                 activeTab === "signin"
-                  ? "bg-white text-primary shadow-sm"
+                  ? "bg-surface-container-lowest text-primary shadow-sm"
                   : "text-on-surface-variant hover:text-on-surface"
               }`}
             >
@@ -293,7 +293,7 @@ function LoginContent() {
               onClick={() => { setActiveTab("signup"); setErrorMsg(null); }}
               className={`flex-1 py-3 text-sm font-bold rounded-full transition-all duration-300 ${
                 activeTab === "signup"
-                  ? "bg-white text-primary shadow-sm"
+                  ? "bg-surface-container-lowest text-primary shadow-sm"
                   : "text-on-surface-variant hover:text-on-surface"
               }`}
             >
