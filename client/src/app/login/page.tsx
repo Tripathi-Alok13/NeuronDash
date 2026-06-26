@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Mail, Lock, User, ArrowRight, ShieldCheck, AlertCircle, X } from "lucide-react";
+import { Button } from "@/components/Button";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -173,6 +174,13 @@ function LoginContent() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const guestParam = searchParams.get("guest");
+    if (guestParam === "true") {
+      handleGuestLogin();
+    }
+  }, [searchParams]);
 
   const handleGoogleLogin = async () => {
     setErrorMsg(null);
@@ -358,20 +366,22 @@ function LoginContent() {
               </div>
             )}
 
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="w-full py-4 rounded-xl font-bold kinetic-gradient text-white shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:scale-100 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              variant="primary"
+              size="lg"
+              className="w-full"
             >
               {loading ? (
                 <span>Securing session...</span>
               ) : (
-                <>
+                <div className="flex items-center gap-2">
                   <span>{activeTab === "signin" ? "Sign In to Account" : "Create Account"}</span>
                   <ArrowRight className="w-4 h-4" />
-                </>
+                </div>
               )}
-            </button>
+            </Button>
 
             <div className="relative flex py-2 items-center">
               <div className="flex-grow border-t border-outline-variant/20"></div>
@@ -380,11 +390,13 @@ function LoginContent() {
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <button
+              <Button
                 type="button"
                 onClick={handleGoogleLogin}
                 disabled={loading}
-                className="py-3.5 rounded-xl font-bold border border-outline-variant/30 text-on-surface hover:bg-surface-container-high/40 transition-all flex items-center justify-center gap-2 cursor-pointer text-xs"
+                variant="secondary"
+                size="md"
+                className="text-xs"
               >
                 <svg className="w-4 h-4 mr-1 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -393,17 +405,21 @@ function LoginContent() {
                   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
                 </svg>
                 <span>Google</span>
-              </button>
+              </Button>
               
-              <button
+              <Button
                 type="button"
                 onClick={handleGuestLogin}
                 disabled={loading}
-                className="py-3.5 rounded-xl font-bold border border-outline-variant/30 text-on-surface hover:bg-surface-container-high/40 transition-all flex items-center justify-center gap-2 cursor-pointer text-xs"
+                variant="secondary"
+                size="md"
+                className="text-xs"
               >
-                <span>Guest</span>
-                <ArrowRight className="w-3.5 h-3.5 text-primary" />
-              </button>
+                <div className="flex items-center gap-1">
+                  <span>Guest</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-primary" />
+                </div>
+              </Button>
             </div>
 
           </form>

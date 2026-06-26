@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Button } from "@/components/Button";
 import { 
   MessageSquare, 
   Activity, 
@@ -22,7 +23,8 @@ import {
   Send, 
   AlertTriangle,
   LineChart,
-  FileText
+  FileText,
+  Menu
 } from "lucide-react";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -129,8 +131,8 @@ export default function WorkspacePage() {
   const [tableSearch, setTableSearch] = useState<string>("");
   const [reportSearch, setReportSearch] = useState<string>("");
   
-  // Theme state
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState("");
@@ -438,6 +440,7 @@ export default function WorkspacePage() {
         setDatasetId(dataset.id);
         setUploadStatus("completed");
         setProgressPercent(100);
+        setActiveTab("dashboard");
         
         // Fetch preview rows & anomalies
         fetchPreview(dataset.id);
@@ -1923,17 +1926,35 @@ export default function WorkspacePage() {
   return (
     <div className="flex h-screen overflow-hidden bg-background font-sans">
       
+      {/* Sidebar Navigation Drawer Backdrop for Mobile */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 md:hidden animate-in fade-in duration-200"
+          onClick={() => setIsMobileMenuOpen(false)}
+        ></div>
+      )}
+      
       {/* Sidebar Navigation */}
-      <aside className="bg-surface-container-lowest h-screen w-64 fixed left-0 top-0 border-r border-outline-variant/30 flex flex-col pb-6 shadow-sm z-50 no-print">
-        <div className="h-16 flex items-center pl-7 pr-6 border-b border-outline-variant/30 mb-6">
+      <aside className={`bg-surface-container-lowest h-screen w-64 fixed left-0 top-0 border-r border-outline-variant/30 flex flex-col pb-6 shadow-sm z-50 no-print transition-transform duration-300 ${
+        isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+      }`}>
+        <div className="h-16 flex items-center justify-between pl-7 pr-4 border-b border-outline-variant/30 mb-6">
           <Link href="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img src={isDarkMode ? "/logo-horizontal-dark.png" : "/logo-horizontal-light.png"} alt="NeuronDash Logo" className="h-9 w-auto object-contain cursor-pointer" />
           </Link>
+          {/* Mobile drawer close button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="md:hidden p-2 text-on-surface-variant hover:bg-surface-container-high rounded-xl cursor-pointer flex items-center justify-center min-h-[40px] min-w-[40px]"
+            title="Close menu"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
         
         <nav className="space-y-1">
           <button
-            onClick={() => setActiveTab("chat")}
+            onClick={() => { setActiveTab("chat"); setIsMobileMenuOpen(false); }}
             className={`w-full flex items-center gap-3 px-6 py-3 text-left transition-colors cursor-pointer border-l-4 ${
               activeTab === "chat"
                 ? "text-primary border-primary bg-surface-container-low font-bold"
@@ -1941,11 +1962,12 @@ export default function WorkspacePage() {
             }`}
           >
             <MessageSquare className="w-5 h-5" />
-            <span className="text-sm">Workspace</span>
+            <span className="text-sm">AI Insights</span>
           </button>
           <button
             onClick={() => {
               setActiveTab("dashboard");
+              setIsMobileMenuOpen(false);
               if (datasetId && !activeDashboard) {
                 handleSelectTemplate(activeTemplate || "auto");
               }
@@ -1959,11 +1981,12 @@ export default function WorkspacePage() {
             title={!datasetId ? "Upload a file to activate analytics" : "View Bento Dashboards"}
           >
             <Activity className="w-5 h-5" />
-            <span className="text-sm">Analytics</span>
+            <span className="text-sm">Dashboard</span>
           </button>
           <button
             onClick={() => {
               setActiveTab("visualize");
+              setIsMobileMenuOpen(false);
             }}
             disabled={!datasetId}
             className={`w-full flex items-center gap-3 px-6 py-3 text-left transition-colors cursor-pointer border-l-4 disabled:opacity-40 disabled:cursor-not-allowed ${
@@ -1977,7 +2000,10 @@ export default function WorkspacePage() {
             <span className="text-sm">Visualize</span>
           </button>
           <button
-            onClick={() => setIsDataPanelOpen(!isDataPanelOpen)}
+            onClick={() => {
+              setIsDataPanelOpen(!isDataPanelOpen);
+              setIsMobileMenuOpen(false);
+            }}
             disabled={!datasetId}
             className={`w-full flex items-center gap-3 px-6 py-3 text-left transition-colors cursor-pointer border-l-4 disabled:opacity-40 disabled:cursor-not-allowed ${
               isDataPanelOpen && datasetId
@@ -1987,11 +2013,12 @@ export default function WorkspacePage() {
             title={!datasetId ? "Upload a file to view library data" : "Toggle Data Library preview panel"}
           >
             <Database className="w-5 h-5" />
-            <span className="text-sm">Data Library</span>
+            <span className="text-sm">Data Table</span>
           </button>
           <button
             onClick={() => {
               setActiveTab("report");
+              setIsMobileMenuOpen(false);
             }}
             disabled={!datasetId}
             className={`w-full flex items-center gap-3 px-6 py-3 text-left transition-colors cursor-pointer border-l-4 disabled:opacity-40 disabled:cursor-not-allowed ${
@@ -2002,7 +2029,7 @@ export default function WorkspacePage() {
             title={!datasetId ? "Upload a file to view detailed report" : "View Detailed Report"}
           >
             <FileText className="w-5 h-5" />
-            <span className="text-sm">Detailed Report</span>
+            <span className="text-sm">Reports</span>
           </button>
         </nav>
 
@@ -2025,6 +2052,7 @@ export default function WorkspacePage() {
                   onClick={() => {
                     setActiveTab("dashboard");
                     handleSelectTemplate(t.type);
+                    setIsMobileMenuOpen(false);
                   }}
                   className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all text-left cursor-pointer ${
                     activeTab === "dashboard" && activeTemplate === t.type
@@ -2054,18 +2082,27 @@ export default function WorkspacePage() {
       </aside>
 
       {/* Main Content Area */}
-      <main className="ml-64 flex-1 flex flex-col h-full bg-background relative">
+            {/* Main Content Area */}
+      <main className="ml-0 md:ml-64 flex-1 flex flex-col h-full bg-background relative">
         
         {/* Top AppBar */}
-        <header className="fixed top-0 right-0 left-64 z-40 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center h-16 px-6 no-print">
-          <div className="flex items-center gap-4">
-            <span className="font-bold text-lg text-on-surface">Data Analysis Engine</span>
-            <div className="h-4 w-px bg-outline-variant/30"></div>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary/10 text-primary">Interactive Sandbox</span>
+        <header className="fixed top-0 right-0 left-0 md:left-64 z-40 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center h-16 px-6 no-print">
+          <div className="flex items-center gap-2">
+            {/* Hamburger Button for mobile */}
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="md:hidden p-2.5 text-on-surface-variant hover:bg-surface-container-high rounded-xl cursor-pointer flex items-center justify-center min-h-[44px] min-w-[44px] mr-1"
+              title="Open Navigation"
+            >
+              <Menu className="w-5.5 h-5.5" />
+            </button>
+            <span className="font-bold text-base md:text-lg text-on-surface truncate max-w-[120px] sm:max-w-none">Data Analysis Engine</span>
+            <div className="h-4 w-px bg-outline-variant/30 hidden sm:block"></div>
+            <span className="text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-full bg-primary/10 text-primary hidden sm:inline-block">Interactive Sandbox</span>
           </div>
 
-          {/* Tab Switcher */}
-          <div className="flex bg-surface-container-high p-1 rounded-xl border border-outline-variant/30">
+          {/* Tab Switcher - Hidden on mobile, shown on desktop */}
+          <div className="hidden md:flex bg-surface-container-high p-1 rounded-xl border border-outline-variant/30">
             <button
               onClick={() => setActiveTab("chat")}
               className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
@@ -2074,7 +2111,7 @@ export default function WorkspacePage() {
                   : "text-on-surface-variant hover:text-on-surface"
               }`}
             >
-              AI Assistant
+              AI Insights
             </button>
             <button
               onClick={() => {
@@ -2091,7 +2128,7 @@ export default function WorkspacePage() {
               } disabled:opacity-40 disabled:cursor-not-allowed`}
               title={!datasetId ? "Upload a dataset first to enable Dashboards" : "View Bento Dashboards"}
             >
-              Bento Dashboards
+              Dashboard
             </button>
             <button
               onClick={() => {
@@ -2105,7 +2142,7 @@ export default function WorkspacePage() {
               } disabled:opacity-40 disabled:cursor-not-allowed`}
               title={!datasetId ? "Upload a dataset first to enable Visualizations" : "Interactive Visualizer"}
             >
-              Interactive Visualizer
+              Visualize
             </button>
             <button
               onClick={() => {
@@ -2119,17 +2156,18 @@ export default function WorkspacePage() {
               } disabled:opacity-40 disabled:cursor-not-allowed`}
               title={!datasetId ? "Upload a dataset first to enable Reports" : "Detailed Report"}
             >
-              Detailed Report
+              Reports
             </button>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <button 
               onClick={toggleTheme}
-              className="p-2 bg-surface-container-high border border-outline-variant/30 rounded-xl hover:bg-surface-container-highest text-on-surface-variant transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+              className="p-2 bg-surface-container-high border border-outline-variant/30 rounded-xl hover:bg-surface-container-highest text-on-surface-variant transition-colors cursor-pointer flex items-center justify-center gap-1.5 min-h-[38px] min-w-[38px] sm:min-h-none sm:min-w-none"
               title="Toggle Dark/Light Mode"
             >
-              {isDarkMode ? <span className="text-xs font-bold">☀️ Light Mode</span> : <span className="text-xs font-bold">🌙 Dark Mode</span>}
+              {isDarkMode ? <span className="text-xs font-bold hidden sm:inline">☀️ Light Mode</span> : <span className="text-xs font-bold hidden sm:inline">🌙 Dark Mode</span>}
+              {isDarkMode ? <span className="sm:hidden text-xs">☀️</span> : <span className="sm:hidden text-xs">🌙</span>}
             </button>
             <div className="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center font-bold text-sm text-primary">
               ND
@@ -2878,7 +2916,13 @@ export default function WorkspacePage() {
 
           {/* Right Sidebar: Data Preview Panel */}
           {isDataPanelOpen && datasetId && (
-            <aside className="w-96 bg-surface-container-lowest border-l border-outline-variant/30 flex flex-col h-full z-10 transition-all duration-300 no-print">
+            <>
+              {/* Mobile backdrop for preview sidebar */}
+              <div 
+                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-45 md:hidden"
+                onClick={() => setIsDataPanelOpen(false)}
+              ></div>
+              <aside className="w-full sm:w-112 md:w-96 bg-surface-container-lowest border-l border-outline-variant/30 flex flex-col h-screen md:h-full z-50 md:z-10 fixed md:relative right-0 top-0 shadow-2xl md:shadow-none transition-all duration-300 no-print">
               
               <div className="p-4 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
                 <div className="flex items-center gap-2">
@@ -2977,7 +3021,8 @@ export default function WorkspacePage() {
               </div>
 
             </aside>
-          )}
+          </>
+        )}
 
         </div>
 

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { Button } from "@/components/Button";
 import { 
   Zap, 
   PlayCircle, 
@@ -24,7 +25,9 @@ import {
   Settings, 
   Activity, 
   User,
-  MapPin
+  MapPin,
+  Menu,
+  X
 } from "lucide-react";
 
 export default function LandingPage() {
@@ -36,6 +39,7 @@ export default function LandingPage() {
   const [contactMessage, setContactMessage] = useState("");
   const [contactSubmitted, setContactSubmitted] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   // Sync theme preference on mount
   useEffect(() => {
@@ -92,51 +96,101 @@ export default function LandingPage() {
     <div className="bg-background text-on-surface font-sans overflow-x-hidden min-h-screen">
       {/* Header Navigation */}
       <header className="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
-        <nav className="flex justify-between items-center h-20 px-8 max-w-7xl mx-auto">
+        <nav className="flex justify-between items-center h-20 px-6 md:px-8 max-w-7xl mx-auto">
           <Link href="/" className="flex items-center hover:opacity-90 transition-opacity">
             <img src={isDarkMode ? "/logo-horizontal-dark.png" : "/logo-horizontal-light.png"} alt="NeuronDash Logo" className="h-10 w-auto object-contain" />
           </Link>
           <div className="hidden md:flex items-center gap-8 text-base">
-            <a className="text-on-surface-variant hover:text-primary transition-colors" href="#features">Features</a>
-            <a className="text-on-surface-variant hover:text-primary transition-colors" href="#pricing">Pricing</a>
-            <a className="text-on-surface-variant hover:text-primary transition-colors" href="#about">About</a>
-            <a className="text-on-surface-variant hover:text-primary transition-colors" href="#contact">Contact</a>
+            <a className="text-on-surface-variant hover:text-primary transition-colors font-medium" href="#features">Features</a>
+            <a className="text-on-surface-variant hover:text-primary transition-colors font-medium" href="#pricing">Pricing</a>
+            <a className="text-on-surface-variant hover:text-primary transition-colors font-medium" href="#about">About</a>
+            <a className="text-on-surface-variant hover:text-primary transition-colors font-medium" href="#contact">Contact</a>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
             <button 
               onClick={toggleTheme}
-              className="p-2 bg-surface-container-low border border-outline-variant/30 rounded-xl hover:bg-surface-container-high text-on-surface-variant transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+              className="p-2.5 bg-surface-container-low border border-outline-variant/30 rounded-xl hover:bg-surface-container-high text-on-surface-variant transition-colors cursor-pointer flex items-center justify-center min-h-[44px] min-w-[44px]"
               title="Toggle Dark/Light Mode"
             >
               {isDarkMode ? <span className="text-xs font-bold px-1">☀️ Light</span> : <span className="text-xs font-bold px-1">🌙 Dark</span>}
             </button>
-            <Link href="/login?tab=signin" className="px-5 py-2 rounded-full font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200">
-              Login
-            </Link>
-            <Link href="/login?tab=signup" className="px-6 py-2.5 rounded-full font-semibold kinetic-gradient text-white hover:scale-102 active:scale-98 transition-all shadow-md shadow-primary/10">
-              Get Started
-            </Link>
+            <div className="hidden md:flex items-center gap-3">
+              <Button href="/login?tab=signin" variant="ghost" size="sm">
+                Login
+              </Button>
+              <Button href="/login?tab=signup" variant="primary" size="sm">
+                Get Started
+              </Button>
+            </div>
+            {/* Hamburger Button for Mobile */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 text-on-surface-variant hover:bg-surface-container-high rounded-xl cursor-pointer flex items-center justify-center min-h-[44px] min-w-[44px]"
+              title="Open Navigation Menu"
+            >
+              <Menu className="w-5.5 h-5.5" />
+            </button>
           </div>
         </nav>
+
+        {/* Mobile Navigation Drawer Overlay */}
+        {isMobileMenuOpen && (
+          <div 
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm md:hidden" 
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <div 
+              className="absolute top-0 right-0 w-64 h-full bg-surface-container-lowest p-6 border-l border-outline-variant/30 flex flex-col space-y-6 shadow-2xl animate-in slide-in-from-right duration-200"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-between items-center">
+                <span className="font-extrabold text-sm text-on-surface uppercase tracking-wider">Navigation</span>
+                <button 
+                  onClick={() => setIsMobileMenuOpen(false)} 
+                  className="p-2 hover:bg-surface-container-high rounded-full cursor-pointer flex items-center justify-center min-h-[40px] min-w-[40px]"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <nav className="flex flex-col space-y-3 text-base font-semibold">
+                <a className="text-on-surface-variant hover:text-primary transition-colors py-2.5 border-b border-outline-variant/10" href="#features" onClick={() => setIsMobileMenuOpen(false)}>Features</a>
+                <a className="text-on-surface-variant hover:text-primary transition-colors py-2.5 border-b border-outline-variant/10" href="#pricing" onClick={() => setIsMobileMenuOpen(false)}>Pricing</a>
+                <a className="text-on-surface-variant hover:text-primary transition-colors py-2.5 border-b border-outline-variant/10" href="#about" onClick={() => setIsMobileMenuOpen(false)}>About</a>
+                <a className="text-on-surface-variant hover:text-primary transition-colors py-2.5 border-b border-outline-variant/10" href="#contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</a>
+              </nav>
+              <div className="pt-6 border-t border-outline-variant/20 flex flex-col gap-3">
+                <Button href="/login?tab=signin" variant="ghost" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
+                  Login
+                </Button>
+                <Button href="/login?tab=signup" variant="primary" className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
+                  Get Started
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </header>
       {/* Hero Section */}
-      <section className="pt-40 pb-24 px-8">
+      <section className="pt-40 pb-24 px-6 md:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-container/10 text-primary font-semibold text-sm mb-8 border border-primary/20">
             <Zap className="w-4 h-4" />
             AI-Powered Data Intelligence
           </div>
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight leading-none text-on-surface">
-            Turn Any File Into <span className="text-primary italic">Actionable Insights</span>
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-6 tracking-tight leading-tight text-on-surface">
+            Turn Raw Spreadsheets Into <span className="text-primary">AI-Powered Insights</span> in Seconds
           </h1>
-          <p className="max-w-2xl mx-auto text-on-surface-variant text-xl leading-relaxed mb-10">
-            Upload Excel, CSV, PDF, or Word files. Our AI cleans your data, detects anomalies, and generates responsive bento dashboards instantly.
+          <p className="max-w-3xl mx-auto text-on-surface-variant text-base sm:text-lg md:text-xl leading-relaxed mb-10">
+            Upload CSV, Excel, PDF, or Word files. NeuronDash automatically cleans your data, profiles dataset quality, and generates responsive dashboards instantly.
           </p>
           
-          <div className="flex justify-center mb-20">
-            <Link href="/login?tab=signup" className="px-10 py-4 rounded-full font-bold kinetic-gradient text-white shadow-xl shadow-primary/20 hover:scale-105 transition-transform text-center">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-20 max-w-md mx-auto sm:max-w-none">
+            <Button href="/login?tab=signup" variant="primary" size="lg" className="w-full sm:w-auto px-10 shadow-xl shadow-primary/20 hover:scale-105">
               Start Free
-            </Link>
+            </Button>
+            <Button href="/login?guest=true" variant="secondary" size="lg" className="w-full sm:w-auto px-10 hover:scale-105 border border-outline-variant/40 bg-surface-container-high/40">
+              Try Guest Demo
+            </Button>
           </div>
           
           {/* Dashboard Mockup */}
@@ -290,9 +344,9 @@ export default function LandingPage() {
                 <li className="flex items-center gap-3"><CheckCircle className="w-4 h-4 text-primary" /> Basic anomaly scanning</li>
                 <li className="flex items-center gap-3"><CheckCircle className="w-4 h-4 text-primary" /> Standard auto-dashboards</li>
               </ul>
-              <Link href="/login?tab=signup" className="w-full py-3.5 rounded-full border-2 border-outline-variant text-center font-bold hover:bg-surface-container-low transition-colors">
+              <Button href="/login?tab=signup" variant="secondary" className="w-full">
                 Start Free
-              </Link>
+              </Button>
             </div>
 
             <div className="glass-card p-10 rounded-[2.5rem] relative kinetic-gradient text-white flex flex-col h-full shadow-2xl scale-105 z-10 border-none">
@@ -310,9 +364,9 @@ export default function LandingPage() {
                 <li className="flex items-center gap-3"><CheckCircle className="w-4 h-4 text-white" /> PDF &amp; CSV export capabilities</li>
                 <li className="flex items-center gap-3"><CheckCircle className="w-4 h-4 text-white" /> Full conversational chat sandbox</li>
               </ul>
-              <Link href="/login?tab=signup" className="w-full py-3.5 rounded-full bg-white text-primary text-center font-bold hover:scale-102 active:scale-98 transition-all shadow-md">
+              <Button href="/login?tab=signup" variant="ghost" className="w-full bg-white text-primary hover:bg-white/90 hover:scale-[1.02] shadow-md">
                 Get Started
-              </Link>
+              </Button>
             </div>
 
             <div className="glass-card p-10 rounded-[2.5rem] flex flex-col h-full">
@@ -325,9 +379,9 @@ export default function LandingPage() {
                 <li className="flex items-center gap-3"><CheckCircle className="w-4 h-4 text-primary" /> Dedicated processing nodes</li>
                 <li className="flex items-center gap-3"><CheckCircle className="w-4 h-4 text-primary" /> Multi-workspace RBAC roles</li>
               </ul>
-              <button className="w-full py-3.5 rounded-full border-2 border-outline-variant font-bold hover:bg-surface-container-low transition-colors">
+              <Button variant="secondary" className="w-full">
                 Contact Sales
-              </button>
+              </Button>
             </div>
           </div>
         </div>

@@ -45,6 +45,7 @@
 }
 
 .dark {
+  --color-primary: #22c55e;
   --color-background: #000000;
   --color-on-background: #ffffff;
   --color-surface: #09090b;
@@ -54,11 +55,11 @@
   --color-surface-container-high: #1e1e24;
   --color-surface-container-lowest: #000000;
   --color-surface-container-highest: #2a2a30;
-  --color-on-surface-variant: #e4e4e7;
+  --color-on-surface-variant: #f4f4f5;
   --color-outline-variant: #27272a;
-  --color-on-tertiary-container: #e4e4e7;
-  --color-secondary: #a1a1aa;
-  --color-tertiary: #71717a;
+  --color-on-tertiary-container: #f4f4f5;
+  --color-secondary: #d4d4d8;
+  --color-tertiary: #a1a1aa;
   --color-error: #ef4444;
 }
 
@@ -68,6 +69,14 @@ body {
   font-family: var(--font-sans);
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Global focus-visible outlines for inputs, textareas, and select elements */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-primary) !important;
+  outline-offset: 2px !important;
 }
 
 .glass-card {
