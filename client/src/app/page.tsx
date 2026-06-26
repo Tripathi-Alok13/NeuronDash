@@ -184,12 +184,9 @@ export default function LandingPage() {
             Upload CSV, Excel, PDF, or Word files. NeuronDash automatically cleans your data, profiles dataset quality, and generates responsive dashboards instantly.
           </p>
           
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-20 max-w-md mx-auto sm:max-w-none">
-            <Button href="/login?tab=signup" variant="primary" size="lg" className="w-full sm:w-auto px-10 shadow-xl shadow-primary/20 hover:scale-105">
+          <div className="flex justify-center mb-20">
+            <Button href="/login?tab=signup" variant="primary" size="lg" className="px-10 shadow-xl shadow-primary/20 hover:scale-105">
               Start Free
-            </Button>
-            <Button href="/login?guest=true" variant="secondary" size="lg" className="w-full sm:w-auto px-10 hover:scale-105 border border-outline-variant/40 bg-surface-container-high/40">
-              Try Guest Demo
             </Button>
           </div>
           
