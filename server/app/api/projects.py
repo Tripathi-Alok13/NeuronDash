@@ -50,17 +50,3 @@ def get_project(
             detail="Project not found"
         )
     return project
-
-from typing import Dict
-from app.core.config import settings
-
-@router.post("/settings")
-def update_llm_settings(
-    keys: Dict[str, str],
-    current_user: User = Depends(get_current_user)
-):
-    if "openai_key" in keys:
-        settings.OPENAI_API_KEY = keys["openai_key"] or None
-    if "anthropic_key" in keys:
-        settings.ANTHROPIC_API_KEY = keys["anthropic_key"] or None
-    return {"status": "success"}

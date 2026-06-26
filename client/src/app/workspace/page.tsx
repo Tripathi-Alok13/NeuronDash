@@ -115,11 +115,7 @@ export default function WorkspacePage() {
   const [progressPercent, setProgressPercent] = useState<number>(0);
   const [uploadError, setUploadError] = useState<string | null>(null);
   
-  // Settings & keys configuration states
-  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
-  const [openaiKey, setOpenaiKey] = useState<string>("");
-  const [anthropicKey, setAnthropicKey] = useState<string>("");
-  const [settingsSaved, setSettingsSaved] = useState<boolean>(false);
+
   
   // Help Center states
   const [isHelpOpen, setIsHelpOpen] = useState<boolean>(false);
@@ -180,26 +176,7 @@ export default function WorkspacePage() {
         }
         setToken(storedToken);
         
-        // Load API Keys from localStorage on startup
-        const savedOpenAI = localStorage.getItem("neurondash_openai_key") || "";
-        const savedAnthropic = localStorage.getItem("neurondash_anthropic_key") || "";
-        setOpenaiKey(savedOpenAI);
-        setAnthropicKey(savedAnthropic);
-        
-        // Auto-sync LLM Keys with Backend Server
-        if (savedOpenAI || savedAnthropic) {
-          fetch(`${BACKEND_URL}/api/v1/projects/settings`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${storedToken}`
-            },
-            body: JSON.stringify({
-              openai_key: savedOpenAI,
-              anthropic_key: savedAnthropic
-            })
-          }).catch(err => console.error("Auto-sync keys failed:", err));
-        }
+
         
         // Fetch projects
         const projectsRes = await fetch(`${BACKEND_URL}/api/v1/projects/`, {
@@ -290,31 +267,7 @@ export default function WorkspacePage() {
     initSession();
   }, [router]);
 
-  const handleSaveSettings = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!token) return;
-    try {
-      const res = await fetch(`${BACKEND_URL}/api/v1/projects/settings`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          openai_key: openaiKey,
-          anthropic_key: anthropicKey
-        })
-      });
-      if (res.ok) {
-        localStorage.setItem("neurondash_openai_key", openaiKey);
-        localStorage.setItem("neurondash_anthropic_key", anthropicKey);
-        setSettingsSaved(true);
-        setTimeout(() => setSettingsSaved(false), 3000);
-      }
-    } catch (err) {
-      console.error("Save settings error:", err);
-    }
-  };
+
 
   // Scroll chat to bottom
   useEffect(() => {
