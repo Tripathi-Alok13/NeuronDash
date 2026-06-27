@@ -62,6 +62,12 @@ function LoginContent() {
     setErrorMsg(null);
     setLoading(true);
 
+    if (activeTab === "signup" && password.length < 8) {
+      setErrorMsg("Password must be at least 8 characters long.");
+      setLoading(false);
+      return;
+    }
+
     try {
       if (activeTab === "signup") {
         // 1. Register User
@@ -77,7 +83,12 @@ function LoginContent() {
 
         if (!regRes.ok) {
           const errData = await regRes.json();
-          throw new Error(errData.detail || "Registration failed. Email might already be taken.");
+          const detail = typeof errData.detail === "string" 
+            ? errData.detail 
+            : Array.isArray(errData.detail) 
+              ? errData.detail.map((e: any) => `${e.loc[e.loc.length - 1]}: ${e.msg}`).join(", ") 
+              : JSON.stringify(errData.detail);
+          throw new Error(detail || "Registration failed. Email might already be taken.");
         }
       }
 
@@ -93,7 +104,12 @@ function LoginContent() {
 
       if (!logRes.ok) {
         const errData = await logRes.json();
-        throw new Error(errData.detail || "Authentication failed. Please verify your credentials.");
+        const detail = typeof errData.detail === "string" 
+          ? errData.detail 
+          : Array.isArray(errData.detail) 
+            ? errData.detail.map((e: any) => `${e.loc[e.loc.length - 1]}: ${e.msg}`).join(", ") 
+            : JSON.stringify(errData.detail);
+        throw new Error(detail || "Authentication failed. Please verify your credentials.");
       }
 
       const data = await logRes.json();
