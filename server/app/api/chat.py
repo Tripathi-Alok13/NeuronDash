@@ -17,7 +17,10 @@ def create_conversation(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    project = db.query(Project).filter(Project.id == project_id).first()
+    project = db.query(Project).filter(
+        Project.id == project_id,
+        Project.org_id == current_user.org_id
+    ).first()
     if not project:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -50,7 +53,10 @@ def get_messages(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    conversation = db.query(Conversation).filter(Conversation.id == conversation_id).first()
+    conversation = db.query(Conversation).join(Project).filter(
+        Conversation.id == conversation_id,
+        Project.org_id == current_user.org_id
+    ).first()
     if not conversation:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -65,7 +71,10 @@ def send_message(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    conversation = db.query(Conversation).filter(Conversation.id == conversation_id).first()
+    conversation = db.query(Conversation).join(Project).filter(
+        Conversation.id == conversation_id,
+        Project.org_id == current_user.org_id
+    ).first()
     if not conversation:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

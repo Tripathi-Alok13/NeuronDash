@@ -5,7 +5,7 @@ import uuid
 from typing import List, Dict, Any
 from app.core.database import get_db
 from app.api.deps import get_current_user
-from app.models.db_models import User, Dataset, Anomaly, CleaningLog
+from app.models.db_models import User, Dataset, Anomaly, CleaningLog, UploadedFile, Project
 from app.schemas.pydantic_schemas import DatasetResponse, AnomalyResponse, CleaningApply
 from app.services.cleaner import DataCleaner
 
@@ -17,7 +17,10 @@ def get_dataset(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    dataset = db.query(Dataset).filter((Dataset.id == dataset_id) | (Dataset.file_id == dataset_id)).first()
+    dataset = db.query(Dataset).join(UploadedFile).join(Project).filter(
+        ((Dataset.id == dataset_id) | (Dataset.file_id == dataset_id)) &
+        (Project.org_id == current_user.org_id)
+    ).first()
     if not dataset:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -32,7 +35,10 @@ def get_dataset_preview(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    dataset = db.query(Dataset).filter((Dataset.id == dataset_id) | (Dataset.file_id == dataset_id)).first()
+    dataset = db.query(Dataset).join(UploadedFile).join(Project).filter(
+        ((Dataset.id == dataset_id) | (Dataset.file_id == dataset_id)) &
+        (Project.org_id == current_user.org_id)
+    ).first()
     if not dataset:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -61,7 +67,17 @@ def get_dataset_anomalies(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    anomalies = db.query(Anomaly).filter(Anomaly.dataset_id == dataset_id).all()
+    # Verify dataset exists and belongs to the user's organization
+    dataset = db.query(Dataset).join(UploadedFile).join(Project).filter(
+        ((Dataset.id == dataset_id) | (Dataset.file_id == dataset_id)) &
+        (Project.org_id == current_user.org_id)
+    ).first()
+    if not dataset:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Dataset not found"
+        )
+    anomalies = db.query(Anomaly).filter(Anomaly.dataset_id == dataset.id).all()
     return anomalies
 
 @router.post("/{dataset_id}/clean", response_model=DatasetResponse)
@@ -71,7 +87,10 @@ def clean_dataset(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    dataset = db.query(Dataset).filter((Dataset.id == dataset_id) | (Dataset.file_id == dataset_id)).first()
+    dataset = db.query(Dataset).join(UploadedFile).join(Project).filter(
+        ((Dataset.id == dataset_id) | (Dataset.file_id == dataset_id)) &
+        (Project.org_id == current_user.org_id)
+    ).first()
     if not dataset:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -80,7 +99,7 @@ def clean_dataset(
         
     # Retrieve anomalies
     anomalies = db.query(Anomaly).filter(
-        Anomaly.dataset_id == dataset_id,
+        Anomaly.dataset_id == dataset.id,
         Anomaly.id.in_([uuid.UUID(op) for op in cleaning_in.approved_ops])
     ).all()
     
@@ -103,7 +122,10 @@ def clean_dataset(
                 
         # Handle rejected operations
         for reject_id in cleaning_in.reject_ops:
-            anom = db.query(Anomaly).filter(Anomaly.id == uuid.UUID(reject_id)).first()
+            anom = db.query(Anomaly).filter(
+                Anomaly.id == uuid.UUID(reject_id),
+                Anomaly.dataset_id == dataset.id
+            ).first()
             if anom:
                 db.delete(anom)
                 
@@ -149,7 +171,10 @@ def visualize_dataset(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    dataset = db.query(Dataset).filter((Dataset.id == dataset_id) | (Dataset.file_id == dataset_id)).first()
+    dataset = db.query(Dataset).join(UploadedFile).join(Project).filter(
+        ((Dataset.id == dataset_id) | (Dataset.file_id == dataset_id)) &
+        (Project.org_id == current_user.org_id)
+    ).first()
     if not dataset:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

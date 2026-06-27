@@ -5,7 +5,7 @@ import uuid
 from typing import List, Dict, Any
 from app.core.database import get_db
 from app.api.deps import get_current_user
-from app.models.db_models import User, Dashboard, DashboardWidget, Dataset, Project
+from app.models.db_models import User, Dashboard, DashboardWidget, Dataset, Project, UploadedFile
 from app.schemas.pydantic_schemas import DashboardCreate, DashboardResponse, DashboardWidgetCreate, DashboardLayoutUpdate
 from app.services.chart_generator import DashboardGenerator
 
@@ -234,14 +234,17 @@ def create_dashboard(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    dataset = db.query(Dataset).filter(Dataset.id == dashboard_in.dataset_id).first()
+    dataset = db.query(Dataset).join(UploadedFile).join(Project).filter(
+        Dataset.id == dashboard_in.dataset_id,
+        Project.org_id == current_user.org_id
+    ).first()
     if not dataset:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Dataset not found"
         )
         
-    project = db.query(Project).filter(Project.id == dataset.file.project_id).first()
+    project = dataset.file.project
     if not project:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -287,7 +290,10 @@ def get_dashboard(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    dashboard = db.query(Dashboard).filter(Dashboard.id == dashboard_id).first()
+    dashboard = db.query(Dashboard).join(Project).filter(
+        Dashboard.id == dashboard_id,
+        Project.org_id == current_user.org_id
+    ).first()
     if not dashboard:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -322,7 +328,10 @@ def update_dashboard_layout(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    dashboard = db.query(Dashboard).filter(Dashboard.id == dashboard_id).first()
+    dashboard = db.query(Dashboard).join(Project).filter(
+        Dashboard.id == dashboard_id,
+        Project.org_id == current_user.org_id
+    ).first()
     if not dashboard:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -332,12 +341,21 @@ def update_dashboard_layout(
     db.commit()
     db.refresh(dashboard)
     return dashboard
-
 @router.get("/project/{project_id}", response_model=List[DashboardResponse])
 def list_project_dashboards(
     project_id: uuid.UUID,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+    # Verify project exists and belongs to the user's organization
+    project = db.query(Project).filter(
+        Project.id == project_id,
+        Project.org_id == current_user.org_id
+    ).first()
+    if not project:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Project not found"
+        )
     dashboards = db.query(Dashboard).filter(Dashboard.project_id == project_id).all()
     return dashboards

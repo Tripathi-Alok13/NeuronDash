@@ -19,22 +19,35 @@ def create_access_token(subject: Union[str, Any], expires_delta: timedelta = Non
 
 def get_password_hash(password: str) -> str:
     """
-    Computes a secure PBKDF2-HMAC-SHA256 hash using 100,000 iterations and a 16-byte salt.
+    Computes a secure PBKDF2-HMAC-SHA256 hash using 600,000 iterations and a 16-byte salt.
     """
     salt = os.urandom(16)
-    db_hash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
-    return salt.hex() + ":" + db_hash.hex()
+    iterations = 600000
+    db_hash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, iterations)
+    return salt.hex() + ":" + db_hash.hex() + ":" + str(iterations)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """
-    Verifies a plain text password against its stored salt and PBKDF2 hash.
+    Verifies a plain text password against its stored salt and PBKDF2 hash,
+    supporting both legacy 100k iteration hashes and new 600k iteration hashes.
     """
     try:
         if ":" not in hashed_password:
             return False
-        salt_hex, hash_hex = hashed_password.split(":")
+        parts = hashed_password.split(":")
+        if len(parts) == 3:
+            salt_hex, hash_hex, iterations_str = parts
+            iterations = int(iterations_str)
+        elif len(parts) == 2:
+            salt_hex, hash_hex = parts
+            iterations = 100000
+        else:
+            return False
+
         salt = bytes.fromhex(salt_hex)
-        db_hash = hashlib.pbkdf2_hmac('sha256', plain_password.encode('utf-8'), salt, 100000)
-        return db_hash.hex() == hash_hex
+        db_hash = hashlib.pbkdf2_hmac('sha256', plain_password.encode('utf-8'), salt, iterations)
+        
+        import secrets
+        return secrets.compare_digest(db_hash.hex(), hash_hex)
     except Exception:
         return False

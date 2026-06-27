@@ -42,7 +42,16 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
 @router.post("/login", response_model=Token)
 def login(credentials: UserLogin, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == credentials.email).first()
-    if not user or not verify_password(credentials.password, user.password_hash):
+    
+    # To mitigate user enumeration timing attacks, always run verify_password
+    dummy_hash = "00000000000000000000000000000000:0000000000000000000000000000000000000000000000000000000000000000:600000"
+    if user:
+        is_valid = verify_password(credentials.password, user.password_hash)
+    else:
+        verify_password(credentials.password, dummy_hash)
+        is_valid = False
+
+    if not user or not is_valid:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password.",

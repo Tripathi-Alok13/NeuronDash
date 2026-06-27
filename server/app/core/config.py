@@ -1,11 +1,17 @@
 from pydantic_settings import BaseSettings
-from typing import Optional
+from typing import Optional, List
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "NeuronDash AI"
     API_V1_STR: str = "/api/v1"
     SECRET_KEY: str = "SUPER_SECRET_NEURAL_TOKEN_129481" # Change in production
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7 # 7 days
+    BACKEND_CORS_ORIGINS: List[str] = [
+        "http://localhost:3000",
+        "http://localhost:8000",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:8000"
+    ]
     
     # DB CONFIGS
     POSTGRES_SERVER: str = "localhost"

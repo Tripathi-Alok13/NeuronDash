@@ -24,8 +24,11 @@ def upload_file(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    # Check if project exists
-    project = db.query(Project).filter(Project.id == project_id).first()
+    # Check if project exists and belongs to the user's organization
+    project = db.query(Project).filter(
+        Project.id == project_id,
+        Project.org_id == current_user.org_id
+    ).first()
     if not project:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

@@ -242,7 +242,14 @@ Instructions:
     @staticmethod
     def evaluate_expression(expr: str, df: pd.DataFrame) -> Any:
         expr = expr.strip()
-        if "__" in expr or "import " in expr or "eval" in expr or "exec" in expr or "os." in expr or "sys." in expr or "subprocess" in expr or "open" in expr:
+        # Block dangerous python functions and pandas read/write functions to prevent file read/write, code execution and SSRF
+        blocked_keywords = [
+            "__", "import ", "eval", "exec", "os.", "sys.", "subprocess", "open", 
+            "read_csv", "read_excel", "read_json", "read_parquet", "read_pickle", "read_sql", "read_xml", "read_html",
+            "to_csv", "to_excel", "to_json", "to_parquet", "to_pickle", "to_sql", "to_xml", "to_html",
+            "shutil", "socket", "requests", "urllib", "system", "popen"
+        ]
+        if any(keyword in expr for keyword in blocked_keywords):
             return "Blocked for safety."
         try:
             import numpy as np

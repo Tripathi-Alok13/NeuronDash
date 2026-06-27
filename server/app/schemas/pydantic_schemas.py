@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List, Any, Dict
 from datetime import datetime
 from uuid import UUID
@@ -9,7 +9,7 @@ class UserBase(BaseModel):
     full_name: str
 
 class UserCreate(UserBase):
-    password: str
+    password: str = Field(..., min_length=8)
 
 class UserLogin(BaseModel):
     email: EmailStr
