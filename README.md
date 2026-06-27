@@ -1,10 +1,7 @@
 # NeuronDash
 
 NeuronDash is an AI powered data diagnostics and interactive reporting dashboard platform. It helps users clean, analyze, visualize, and query datasets in realtime using modern, high fidelity widgets and an integrated conversational LLM assistant.
-
 ![NeuronDash Landing Page Preview](client/public/landing_page_preview.png)
-
----
 
 ##  Repository Architecture
 
