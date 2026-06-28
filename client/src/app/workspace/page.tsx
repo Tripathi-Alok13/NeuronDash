@@ -27,7 +27,22 @@ import {
   Menu
 } from "lucide-react";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const getBackendUrl = () => {
+  if (typeof window === "undefined") {
+    return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  }
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  const hostname = window.location.hostname;
+  const isLocalIp = /^(192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.)/.test(hostname);
+  if (isLocalIp) {
+    return `http://${hostname}:8000`;
+  }
+  return "http://localhost:8000";
+};
+
+const BACKEND_URL = getBackendUrl();
 
 interface Message {
   id: string;
