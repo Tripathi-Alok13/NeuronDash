@@ -1,28 +1,34 @@
+import os
+import json
 from pydantic_settings import BaseSettings
 from typing import Optional, List, Union
-from pydantic import field_validator
 
-class Settings(BaseSettings):
-    PROJECT_NAME: str = "NeuronDash AI"
-    API_V1_STR: str = "/api/v1"
-    SECRET_KEY: str = "SUPER_SECRET_NEURAL_TOKEN_129481" # Change in production
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7 # 7 days
-    BACKEND_CORS_ORIGINS: List[str] = [
+def get_cors_origins() -> List[str]:
+    origins_str = os.getenv("BACKEND_CORS_ORIGINS")
+    default_origins = [
         "http://localhost:3000",
         "http://localhost:8000",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:8000",
         "https://neuron-dash.vercel.app"
     ]
+    if not origins_str:
+        return default_origins
     
-    @field_validator("BACKEND_CORS_ORIGINS", mode="before")
-    @classmethod
-    def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
-        if isinstance(v, str) and not v.startswith("["):
-            return [i.strip() for i in v.split(",")]
-        elif isinstance(v, (list, str)):
-            return v
-        raise ValueError(v)
+    if origins_str.startswith("[") and origins_str.endswith("]"):
+        try:
+            return json.loads(origins_str)
+        except Exception:
+            pass
+            
+    return [o.strip() for o in origins_str.split(",") if o.strip()]
+
+class Settings(BaseSettings):
+    PROJECT_NAME: str = "NeuronDash AI"
+    API_V1_STR: str = "/api/v1"
+    SECRET_KEY: str = "SUPER_SECRET_NEURAL_TOKEN_129481" # Change in production
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7 # 7 days
+    BACKEND_CORS_ORIGINS: List[str] = get_cors_origins()
     
     # DB CONFIGS
     POSTGRES_SERVER: str = "localhost"
