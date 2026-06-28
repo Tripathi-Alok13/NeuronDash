@@ -242,15 +242,39 @@ Instructions:
     @staticmethod
     def evaluate_expression(expr: str, df: pd.DataFrame) -> Any:
         expr = expr.strip()
-        # Block dangerous python functions and pandas read/write functions to prevent file read/write, code execution and SSRF
-        blocked_keywords = [
-            "__", "import ", "eval", "exec", "os.", "sys.", "subprocess", "open", 
-            "read_csv", "read_excel", "read_json", "read_parquet", "read_pickle", "read_sql", "read_xml", "read_html",
-            "to_csv", "to_excel", "to_json", "to_parquet", "to_pickle", "to_sql", "to_xml", "to_html",
-            "shutil", "socket", "requests", "urllib", "system", "popen"
-        ]
-        if any(keyword in expr for keyword in blocked_keywords):
-            return "Blocked for safety."
+        
+        # Parse the expression using python's AST library to check for safety
+        import ast
+        try:
+            node = ast.parse(expr, mode='eval')
+        except Exception:
+            return "Calculation failed: Invalid syntax."
+            
+        # Traverse AST and check for blocked nodes, names, or attributes
+        for child in ast.walk(node):
+            # Block imports
+            if isinstance(child, (ast.Import, ast.ImportFrom)):
+                return "Blocked for safety."
+            
+            # Block dangerous builtins, function names, and module/package access
+            if isinstance(child, ast.Name):
+                blocked_names = {
+                    'eval', 'exec', 'open', 'compile', 'globals', 'locals', 'getattr', 'setattr', 'delattr',
+                    'hasattr', 'input', 'shutil', 'socket', 'requests', 'urllib', 'subprocess', 'os', 'sys', '__import__'
+                }
+                if child.id in blocked_names or child.id.startswith('__'):
+                    return "Blocked for safety."
+            
+            # Block dangerous attribute calls or methods (like read/write or remote code execution)
+            if isinstance(child, ast.Attribute):
+                blocked_attrs = {
+                    'system', 'popen', 'read_csv', 'read_excel', 'read_json', 'read_parquet', 'read_pickle', 
+                    'read_sql', 'read_xml', 'read_html', 'to_csv', 'to_excel', 'to_json', 'to_parquet', 
+                    'to_pickle', 'to_sql', 'to_xml', 'to_html', 'eval', 'exec', 'query'
+                }
+                if child.attr in blocked_attrs or child.attr.startswith('__'):
+                    return "Blocked for safety."
+
         try:
             import numpy as np
             locs = {"df": df, "pd": pd, "np": np}
