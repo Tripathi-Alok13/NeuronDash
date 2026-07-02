@@ -657,6 +657,18 @@ export default function LandingPage() {
                 {
                   q: "Can I customize the generated dashboards?",
                   a: "Absolutely. You can edit report details, reorder layout grids, and add custom chart queries directly using the natural language chat workspace."
+                },
+                {
+                  q: "What file formats does NeuronDash support?",
+                  a: "NeuronDash supports CSV, Excel (XLSX), Word documents (DOCX), and PDF files. The platform automatically scans, structures, cleans, and identifies outliers in these file types upon upload."
+                },
+                {
+                  q: "Can I export my dashboards and reports?",
+                  a: "Yes, you can generate and download comprehensive PDF reports containing your formatted tables, key metrics, and charts with a single click, ready for offline sharing and presentations."
+                },
+                {
+                  q: "Do I need my own API keys to use the AI assistant?",
+                  a: "By default, NeuronDash can utilize secure server-side API keys. However, for fully custom limits and custom models, you can also input your own OpenAI or Anthropic API keys directly into your local browser workspace."
                 }
               ].map((faq, idx) => (
                 <div key={idx} className="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden">
