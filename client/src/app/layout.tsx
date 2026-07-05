@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   description: "Interactive data analysis, bento dashboards, cleaning, and diagnostics in seconds.",
   icons: {
     icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/favicon-32.png", sizes: "32x32", type: "image/png" }
     ],
     apple: [

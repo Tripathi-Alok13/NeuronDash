@@ -98,7 +98,7 @@ export default function LandingPage() {
       <header className="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
         <nav className="flex justify-between items-center h-20 px-6 md:px-8 max-w-7xl mx-auto">
           <Link href="/" className="flex items-center hover:opacity-90 transition-opacity">
-            <img src={isDarkMode ? "/logo-horizontal-dark.png" : "/logo-horizontal-light.png"} alt="NeuronDash Logo" className="h-10 w-auto object-contain" />
+            <img src={isDarkMode ? "/logo-horizontal-dark.svg" : "/logo-horizontal-light.svg"} alt="NeuronDash Logo" className="h-10 w-auto object-contain" />
           </Link>
           <div className="hidden md:flex items-center gap-8 text-base">
             <a className="text-on-surface-variant hover:text-primary transition-colors font-medium" href="#features">Features</a>

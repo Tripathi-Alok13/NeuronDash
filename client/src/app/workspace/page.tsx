@@ -1908,7 +1908,7 @@ export default function WorkspacePage() {
       }`}>
         <div className="h-16 flex items-center justify-between pl-7 pr-4 border-b border-outline-variant/30 mb-6">
           <Link href="/" className="flex items-center hover:opacity-90 transition-opacity">
-            <img src={isDarkMode ? "/logo-horizontal-dark.png" : "/logo-horizontal-light.png"} alt="NeuronDash Logo" className="h-9 w-auto object-contain cursor-pointer" />
+            <img src={isDarkMode ? "/logo-horizontal-dark.svg" : "/logo-horizontal-light.svg"} alt="NeuronDash Logo" className="h-9 w-auto object-contain cursor-pointer" />
           </Link>
           {/* Mobile drawer close button */}
           <button

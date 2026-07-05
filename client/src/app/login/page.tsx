@@ -306,11 +306,8 @@ function LoginContent() {
         {/* Brand Header */}
         <div className="flex flex-col items-center text-center space-y-2">
           <Link href="/" className="flex items-center justify-center w-full hover:opacity-90 transition-opacity">
-            <img src={isDarkMode ? "/logo-horizontal-dark.png" : "/logo-horizontal-light.png"} alt="NeuronDash Logo" className="h-12 w-auto object-contain animate-[fade-in_0.5s_ease-out]" />
+            <img src="/logo-stacked.svg" alt="NeuronDash Logo" className="h-20 w-auto object-contain animate-[fade-in_0.5s_ease-out]" />
           </Link>
-          <p className="text-sm text-on-surface-variant max-w-xs mt-2">
-            AI-powered data diagnostics and interactive reporting dashboards.
-          </p>
         </div>
 
         {/* Auth Glass Card */}
